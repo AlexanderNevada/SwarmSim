@@ -4,18 +4,18 @@ close all;
 % generate map for the simulation
 size = 15;
 resolution = 10;
-numObstacles = 0;
+numObstacles = 2;
 space = 5;
 %p = zeros(size*resolution);
 map_gen = MapGenerate(size,size,space,resolution);
-[p,map_gen] = map_gen.addBounds(2);
+[p,map_gen] = map_gen.addBounds(2); % boundary width
 for i = 1:numObstacles
-    [p,map_gen] = map_gen.addRandomObstacle(1.5,0.5);
+    [p,map_gen] = map_gen.addRandomObstacle(1.0,0.5); %max_size, min_size
 end
 map = binaryOccupancyMap(p,resolution);
 
 %% specify some parameters
-form = VShapeFormation();%DiamondFormation();
+form = LineFormation(); %DiamondFormation(); %VShapeFormation();  %DiamondFormation();
 numRobots = form.numRobots;
 numSensors = 5;
 sensorRange = 2.5;
@@ -35,7 +35,7 @@ end
 swarmInfo = SwarmInfo(numRobots,robotInfos,initial_poses,false);
 %% leader-follower simulation
 sim = LeaderFollowerSimulation(map,swarmInfo,form);
-for i = 1:500
+for i = 1:1000
     sim = sim.step();
     axis([0 size 0 size])
     pause(0.02);

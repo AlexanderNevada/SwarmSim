@@ -8,10 +8,11 @@ classdef RobotInfo
         body_width   % width of chassis
         numSensors   % number of range finders mounted
         sensorRange  % max range of each range finder
+        value        % importance of this robot
     end
     
     methods
-        function obj = RobotInfo(t,R,L,s,r)
+        function obj = RobotInfo(t,R,L,s,r,v)
             %ROBOTINFO construct a robotInfo object
             % check dynamics type
             valid_dynamics = ["DiffDrive";"OmniDir"];
@@ -24,6 +25,7 @@ classdef RobotInfo
             obj.body_width = L;
             obj.numSensors = s;
             obj.sensorRange = r;
+            obj.value = v;
         end
         
         function type = get_type(obj)

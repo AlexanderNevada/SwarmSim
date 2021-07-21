@@ -50,7 +50,7 @@ classdef RangeFinders
         
         function filled_reads = fill_nan(obj,raw_reads)
             % fill nans in raw readings with maximum sensor range
-            %disp(raw_reads);
+            % disp(raw_reads);
             filled_reads = fillmissing(raw_reads,'constant',obj.max_range);
         end
     end

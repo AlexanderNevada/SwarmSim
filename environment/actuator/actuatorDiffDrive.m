@@ -20,9 +20,17 @@ classdef actuatorDiffDrive < actuator
         function vel = actuate(obj,control,pose)
             vRef = control.vRef;
             wRef = control.wRef;
+            %disp('vRef')
+            %disp(vRef)
+            %disp('wRef')
+            %disp(wRef)
             % compute velocity in the world frame 
             [wL,wR] = inverseKinematics(obj.dynamics,vRef,wRef);
             [v,w] = forwardKinematics(obj.dynamics,wL,wR);
+            %disp('v')
+            %disp(v)
+            %disp('w')
+            %disp(w)
             velB = [v;0;w]; % Body velocities [vx;vy;w]
             vel = bodyToWorld(velB,pose);  % Convert from body to world
         end

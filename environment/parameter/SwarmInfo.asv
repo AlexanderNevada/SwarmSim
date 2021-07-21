@@ -5,13 +5,13 @@ classdef SwarmInfo
         numRobots % number of robots in the system
         infos     % parameters for each robot, cell array with type RobotInfo
         poses     % current poses of the system, size (3,numRobots)
-        vels      % current velocities of the system, size (3,numRobots)    
+        
         showTraj  % flag if show trajectory
     end
     
     methods
         
-        function obj = SwarmInfo(numRobots,infos,poses,vels,show)
+        function obj = SwarmInfo(numRobots,infos,poses,show)
             %SWARMINFO construct a swarm info object
             if (numRobots ~= length(infos))
                 msg = "numRobots and length of robot information don't match";
@@ -28,7 +28,6 @@ classdef SwarmInfo
             obj.numRobots = numRobots;
             obj.infos = infos;
             obj.poses = poses;
-            obj.vels = vels;
             obj.showTraj = show;
         end
         

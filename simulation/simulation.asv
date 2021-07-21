@@ -23,10 +23,6 @@ classdef simulation
             readings = obj.world.readSensors();
         end
         
-        function detections = detection_phase(obj)
-            detections = obj.world.readDetections();
-        end
-        
         function obj = physics_phase(obj,poses,vels)
             poses = obj.physics.check_obstacles(poses,obj.prev_poses);
             %poses = obj.physics.check_robots(poses,obj.prev_poses);

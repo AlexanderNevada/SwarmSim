@@ -14,7 +14,7 @@ classdef world
     end
     
     methods
-        function obj = world(swarmInfo)
+        function obj = world(swarmInfo,simConst)
             %WORLD constructor
             numRobots = swarmInfo.numRobots;
             showTraj = swarmInfo.showTraj;
@@ -23,7 +23,7 @@ classdef world
             obj.env = MultiRobotEnv(obj.numRobots);
             obj.env.hasWaypoints = true;
             obj.env.showTrajectory = showTraj;
-            obj.env.robotRadius = 0.25;
+            obj.env.robotRadius = simConst.length;
             obj.env.mapName = 'map';
             obj.sensors = cell(1,obj.numRobots);
             obj.detectors = cell(1,obj.numRobots);
@@ -33,7 +33,7 @@ classdef world
                 % associate range finders for each robot
                 lidar = MultiRobotLidarSensor;
                 lidar.robotIdx = i;
-                lidar.scanAngles = linspace(-pi,pi,robotInfo.numSensors);
+                lidar.scanAngles = linspace(-simConst.lidar_range,simConst.lidar_range,robotInfo.numSensors); %% range !
                 lidar.maxRange = robotInfo.sensorRange;
                 attachLidarSensor(obj.env, lidar); % associate lidar with map
                 obj.sensors{i} = lidar;
@@ -41,13 +41,13 @@ classdef world
                 detector = RobotDetector(obj.env,i);
                 detector.sensorOffset = [0 0];
                 detector.sensorAngle = 0;
-                detector.fieldOfView = 2*pi;  % full range robot detection
+                detector.fieldOfView = simConst.detect_fieldOfView;  % full range robot detection
                 detector.maxRange = robotInfo.sensorRange;
                 detector.maxDetections = obj.numRobots-1; % maximum number of detections
                 obj.detectors{i} = detector;
                 % associate landmark detector of each robot
                 camera = ObjectDetector;
-                camera.fieldOfView = pi/2;
+                camera.fieldOfView = simConst.cam_fieldOfView;
                 attachObjectDetector(obj.env,i,camera);
                 obj.cameras{i} = camera;
             end
@@ -57,6 +57,11 @@ classdef world
         function obj = update_poses(obj,new_poses)
             % return the current poses
             obj.poses = new_poses;
+        end
+        
+        function obj = update_vels(obj,new_vels)
+            % return the current poses
+            obj.vels = new_vels;
         end
         
         function poses = get_poses(obj)

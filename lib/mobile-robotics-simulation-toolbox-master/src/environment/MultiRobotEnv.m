@@ -27,18 +27,18 @@ classdef MultiRobotEnv < matlab.System
         robotColors = [];           % Robot colors
         % Lidar
         sensorOffset = {[0 0]};          % Lidar sensor offset (x,y) [m]
-        scanAngles = {[-pi/4,0,pi/4]};   % Scan angles [rad]
+        scanAngles = {[-pi/2,0,pi/2]};   % Scan angles [rad]
         % Object detectors
         objDetectorOffset = {[0 0]};     % Object detector offset (x,y) [m]
         objDetectorAngle = 0;            % Object detector angle [rad]
-        objDetectorFOV = pi/4;           % Object detector field of view [rad]
+        objDetectorFOV = pi/2;           % Object detector field of view [rad]
         objDetectorMaxRange = 5;         % Object detector maximum range [m]
         objectColors = [1 0 0;0 1 0;0 0 1]; % Object label colors [RGB rows]
         objectMarkers = 's';             % Object markers [character array]
         % Robot detectors
         robotDetectorOffset = {[0 0]};   % Robot detector offset (x,y) [m]
         robotDetectorAngle = 0;          % Robot detector angle [rad]
-        robotDetectorFOV = pi/4;         % Robot detector field of view [rad]
+        robotDetectorFOV = pi/2;         % Robot detector field of view [rad]
         robotDetectorMaxRange = 5;       % Robot detector maximum range [m]
     end
     properties % Tunable
