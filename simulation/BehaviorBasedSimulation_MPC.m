@@ -9,6 +9,7 @@ classdef BehaviorBasedSimulation_MPC < simulation
         function obj = BehaviorBasedSimulation_MPC(map,swarmInfo,simConst)
             %BEHAVIORBASEDSIMULATION 
             % construct the simulation
+            obj.simConst = simConst;
             obj.sampleTime = simConst.sampleTime;
             obj.numRobots = swarmInfo.numRobots;
             obj.world = world(swarmInfo,simConst);
@@ -18,7 +19,7 @@ classdef BehaviorBasedSimulation_MPC < simulation
             robotInfos = swarmInfo.infos;
             for i = 1:obj.numRobots
                 robotInfo = robotInfos{i};
-                obj.controllers{i} =  DiffBehaviorBased_MPC(robotInfo,goal) ; %DiffDriveBehaviorBasedBlend(robotInfo,goal); % 
+                obj.controllers{i} =  DiffBehaviorBased_MPC(robotInfo,goal,simConst) ; %DiffDriveBehaviorBasedBlend(robotInfo,goal); % 
             end
             % assign actuator to each robot
             obj.actuators = cell(1,obj.numRobots);
@@ -34,6 +35,7 @@ classdef BehaviorBasedSimulation_MPC < simulation
             obj.physics = AABB(map,swarmInfo.numRobots,0.25,true);
             obj.prev_poses = swarmInfo.poses;
             obj.prev_vels = swarmInfo.vels;
+            
         end
         
         function obj = step(obj)
@@ -56,15 +58,34 @@ classdef BehaviorBasedSimulation_MPC < simulation
         end
         
          function controls = control_phase(obj,readings,detections)
-            poses = obj.world.get_poses(); % current system states!!!
+            poses = obj.world.get_poses(); % current system states
+            vels = obj.world.get_vels();
             %disp('poses')
             %disp(poses)
             controls = cell(1,obj.numRobots);
             for i = 1:obj.numRobots
                 ctl = obj.controllers{i};
                 pose = poses(:,i);
+                vel = vels(:,i);
                 reading = readings{i};
-                controls{i} = ctl.compute_control(pose,reading);
+                detection = detections{i};
+                proxmity_filter_i = zeros(obj.numRobots,1);
+                if ~isempty(detection)
+                    [neighbor_num,~] = size(detection);
+                    poses_j = [];
+                    vels_j = [];
+                    for j = 1:neighbor_num
+                       neighobr_idx = detection(j,3);
+                       proxmity_filter_i(neighobr_idx) = 1;                     
+                     %% debug
+                        disp('debug')
+                        disp('proxmity_filter_i')
+                        disp(proxmity_filter_i)
+                    end
+                else
+                end
+
+                controls{i} = ctl.compute_control(i,pose,vel,reading,proxmity_filter_i,poses,vels);
             end
          end
     end

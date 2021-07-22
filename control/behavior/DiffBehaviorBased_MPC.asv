@@ -70,13 +70,11 @@ classdef DiffBehaviorBased_MPC < control
             p = obj.simConst.protection;
             target_w = obj.simConst.target_weight;
             goal = obj.goal;
-            u_best1 = controller_greedy(proxmity_filter_i,line_vel_i,rotate_vel_i,line_vels_j,rotate_vels_j,value_i,pose_i,theta_i,poses_j,thetas_j,sample_time,distance,lambda,c,p,target_w,goal,obj.simConst);
-            u_best2 = controller_mpc(proxmity_filter_i,line_vel_i,rotate_vel_i,line_vels_j,rotate_vels_j,value_i,pose_i,theta_i,poses_j,thetas_j,sample_time,distance,lambda,c,p,target_w,goal,obj.simConst);
+            u_best = controller_greedy(proxmity_filter_i,line_vel_i,rotate_vel_i,line_vels_j,rotate_vels_j,value_i,pose_i,theta_i,poses_j,thetas_j,sample_time,distance,lambda,c,p,target_w,goal);
+            ~ = controller_mpc(proxmity_filter_i,line_vel_i,rotate_vel_i,line_vels_j,rotate_vels_j,value_i,pose_i,theta_i,poses_j,thetas_j,sample_time,distance,lambda,c,p,target_w,goal);
             disp('u_best');
-            disp(u_best1);
-            %disp('u_best2');
-            %disp(u_best2);
-            u_best = u_best2;
+            disp(u_best);
+
              %((xi + sampleTime*(line_vel_i+alpha*sample_time)*cos(theta_i+rotate_vel_i*sample_time+beta*sample_time))- ...
              %xj(1)- sampleTime*line_vel_j(1)*cos(theta_j(1)+rotate_vel_j(1)*sample_time))  
              %)

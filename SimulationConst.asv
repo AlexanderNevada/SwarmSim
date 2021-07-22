@@ -39,13 +39,10 @@ const.d = 2.0 ;
 const.protection = 1.0;
 const.target_weight = 0.1;
 const.max_v_l = 1;
-const.min_v_l = 0;
 const.max_a_l = 1;
-const.min_a_l = -1;
+const.min_a_l = 0;
 const.max_v_r = 2;
-const.min_v_r = -2;
 const.max_a_r = 2;
-const.min_a_r = -2;
 
 %% The wall contour - (x,y) coordinates of corners as in Table 1
 const.contour = [0.50, 0.00;

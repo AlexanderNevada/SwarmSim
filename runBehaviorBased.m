@@ -41,7 +41,7 @@ swarmInfo = SwarmInfo(numRobots,robotInfos,initial_poses,initial_vels,false);
 %% virtual structure simulation
 %sim = BehaviorBasedSimulation(map,swarmInfo);
 sim = BehaviorBasedSimulation_MPC(map,swarmInfo,simConst);
-for i = 1:500
+for i = 1:10
     sim = sim.step();
     axis([0 15 0 15])
     pause(0.02);

@@ -7,6 +7,7 @@ classdef world
         numSensors % number of sensors equiped on each robot
         sensorRange% maximum range of sensing
         poses      % current poses of each robot
+        vels       % current speed of each robot
         sensors    % sensor information of each robot
         detectors  % robot detector of each robot
         cameras    % landmark sensor of each robot
@@ -19,6 +20,7 @@ classdef world
             numRobots = swarmInfo.numRobots;
             showTraj = swarmInfo.showTraj;
             poses = swarmInfo.poses;
+            vels = swarmInfo.vels;
             obj.numRobots = numRobots;
             obj.env = MultiRobotEnv(obj.numRobots);
             obj.env.hasWaypoints = true;
@@ -52,6 +54,7 @@ classdef world
                 obj.cameras{i} = camera;
             end
             obj.poses = poses; % initial poses
+            obj.vels = vels;
         end
         
         function obj = update_poses(obj,new_poses)
@@ -67,6 +70,11 @@ classdef world
         function poses = get_poses(obj)
             % update current poses
             poses = obj.poses;
+        end
+        
+        function vels = get_vels(obj)
+            % update current poses
+            vels = obj.vels;
         end
         
         function obj = addLandmarks(obj,data)

@@ -9,8 +9,6 @@ function u_best = controller_mpc(proxmity_filter_i,line_vel_i,rotate_vel_i,line_
     mpc_distributed_controller.PredictionHorizon = 10;
     mpc_distributed_controller.ControlHorizon = 10;
     
-    
-    
     function z = myStateFunction(x,u,Ts,goal,proxmity_filter_i,line_vel_i,rotate_vel_i,line_vels_j,rotate_vels_j,value_i,pose_i,theta_i,poses_j,thetas_j,simConst)
        z = zeros(5,1);
        z(1) = x(1) + Ts*(x(4)+u(1)*Ts)*cos(x(3)+Ts*(x(5)+u(2)*Ts));
@@ -41,16 +39,11 @@ function u_best = controller_mpc(proxmity_filter_i,line_vel_i,rotate_vel_i,line_
     mpc_distributed_controller.Model.NumberOfParameters = 13;
     function J = myCostFunction(X,U,e,data,sample_time,goal,proxmity_filter_i,line_vel_i,rotate_vel_i,line_vels_j,rotate_vels_j,value_i,pose_i,theta_i,poses_j,thetas_j,simConst)
         p = data.PredictionHorizon;
-        X_pose_j = zeros(p,1);
-        Y_pose_j = zeros(p,1);
-        for i=1:p
-            
-        end
-        
         U1 = U(1:p,data.MVIndex(1));
         U2 = U(1:p,data.MVIndex(2));
         X1 = X(2:p+1,1);
         X2 = X(2:p+1,2);
+        X_pose_i = X(2:p+1,1:2);
         %X3 = X(2:p+1,3);
         %X4 = X(2:p+1,4);
         %X5 = X(2:p+1,5);

@@ -11,6 +11,7 @@ classdef simulation
         prev_poses
         prev_vels
         hPlot
+        simConst
     end
     
     methods (Abstract)
@@ -31,6 +32,7 @@ classdef simulation
             poses = obj.physics.check_obstacles(poses,obj.prev_poses);
             %poses = obj.physics.check_robots(poses,obj.prev_poses);
             obj.world = obj.world.update_poses(poses);
+            obj.world = obj.world.update_vels(vels);
             obj.prev_poses = poses;
             obj.prev_vels = vels;
         end
@@ -55,6 +57,8 @@ classdef simulation
                 control = controls{i};
                 vel = actuator.actuate(control,pose);
                 vels(:,i) = vel;
+                %disp('control')
+                %disp(control)
             end
         end
         
